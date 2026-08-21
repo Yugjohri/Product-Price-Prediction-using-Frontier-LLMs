@@ -12,17 +12,33 @@ to wake, which is a poor property for a portfolio link.
 
 ## What actually gets deployed
 
-Only three things, enforced by [`.vercelignore`](.vercelignore):
+Four things, enforced by [`.vercelignore`](.vercelignore):
 
 ```
+index.py          WSGI entrypoint - routes /api/predict, serves the two files
 index.html        the demo page
 showcase.json     pre-computed predictions
-api/predict.py    the estimate endpoint (stdlib only)
+api/predict.py    request handling logic (stdlib only)
 ```
 
 Everything else — `.env`, `pricer/`, `benchmarks/`, `tests/`, the notebooks,
 the trained weights — is excluded. The training code is not needed at runtime
 and must not sit on a public server.
+
+**Why an `index.py` rather than `api/` functions.** Vercel's current Python
+runtime looks for a single application object in one of a few default filenames
+(`app.py`, `index.py`, `server.py`, `main.py`, `wsgi.py`, `asgi.py`). The older
+"every file under `api/` becomes its own function" convention is no longer
+detected, and a deployment without a recognised entrypoint fails the build with:
+
+```
+No python entrypoint found in default locations, but found potential
+entrypoints: api/predict.py (variable: handler)
+```
+
+`index.py` is that entrypoint. It stays dependency-free — plain WSGI, no
+framework — and serves static assets from an explicit allowlist so no request
+can reach source files or `.env`.
 
 ---
 
@@ -72,17 +88,33 @@ You authenticate yourself; the token stays on your machine.
 
 From the repository root:
 
+The project name comes from the folder name, which Vercel requires to be
+lowercase — this repository's folder is not, so link it explicitly first:
+
 ```bash
-vercel            # preview deployment
-vercel --prod     # promote to production
+vercel link --yes --project price-predictor
+vercel --yes            # preview deployment
+vercel --prod --yes     # promote to production
 ```
 
-Vercel auto-detects `api/*.py` as Python functions and serves the root
-statically. No `vercel.json` is required.
+Without the `link` step the deploy fails with *"Project names ... must be
+lowercase"*. No `vercel.json` is required.
 
 ---
 
-## Step 5 — add the secret
+## Step 5 — turn off Deployment Protection
+
+New Vercel projects enable **Vercel Authentication** by default, which puts a
+login wall in front of every deployment — including production. The site returns
+`401 Protected deployment` to anyone not signed in to the Vercel account, which
+defeats the point of a public demo.
+
+**Project → Settings → Deployment Protection → Vercel Authentication →
+Disabled**, then save.
+
+---
+
+## Step 6 — add the secret
 
 In the Vercel dashboard: **Project → Settings → Environment Variables**
 
@@ -98,7 +130,7 @@ Redeploy after adding (`vercel --prod`) so the function picks it up.
 
 ---
 
-## Step 6 — verify the live deployment
+## Step 7 — verify the live deployment
 
 Replace `<url>` with the deployed domain.
 

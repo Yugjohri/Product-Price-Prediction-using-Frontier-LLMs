@@ -3,7 +3,7 @@
 **Estimating product prices from text — comparing a prompted LLM against a neural
 network trained from scratch.**
 
-[![Try it live](https://img.shields.io/badge/Try_it_live-Vercel-black?logo=vercel&logoColor=white)](https://github.com/Yugjohri/Product-Price-Prediction-using-Frontier-LLMs)
+[![Try it live](https://img.shields.io/badge/Try_it_live-price--predictor-black?logo=vercel&logoColor=white)](https://price-predictor-yug20.vercel.app)
 
 Predicting a price is *regression* — mapping text onto a continuous number.
 Language models are next-token predictors and were never built for it. So: can

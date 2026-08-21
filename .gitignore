@@ -36,3 +36,6 @@ CLAUDE_PROMPT_*.md
 # OS
 .DS_Store
 Thumbs.db
+
+.vercel
+.env*
