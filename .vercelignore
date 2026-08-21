@@ -1,0 +1,18 @@
+# Deploy ONLY the demo: index.html, showcase.json, api/.
+# Everything below is research/training code that must never reach the server.
+
+.env
+.env.*
+.venv/
+__pycache__/
+*.pyc
+
+benchmarks/
+pricer/
+tests/
+jsonl/
+*.ipynb
+*.csv
+*.pt
+CLAUDE_PROMPT_host-notebook-project.md
+DEPLOY.md

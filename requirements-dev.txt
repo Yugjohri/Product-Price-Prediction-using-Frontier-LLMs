@@ -1,0 +1,24 @@
+# Local development, benchmarking and training. NOT deployed.
+# Python 3.12 recommended (3.14 has no torch wheels at time of writing).
+#
+#   python -m venv .venv
+#   .venv/Scripts/pip install -r requirements-dev.txt
+
+# --- benchmarks + demo server ---
+python-dotenv
+groq
+openai
+datasets
+pydantic
+
+# --- the from-scratch neural network ---
+torch
+scikit-learn
+numpy
+
+# --- notebooks / charts ---
+pandas
+plotly
+tqdm
+ipywidgets
+ipykernel

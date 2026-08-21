@@ -1,11 +1,33 @@
 import numpy as np
-from tqdm.notebook import tqdm
+from tqdm.auto import tqdm
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import BatchSampler, DataLoader, Dataset, RandomSampler
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from sklearn.feature_extraction.text import HashingVectorizer
+
+
+class SparseBatchDataset(Dataset):
+    """Keeps the hashed features sparse, densifying only one batch at a time.
+
+    The feature matrix is 5,000-wide and mostly zeros. Densifying it up front
+    costs ~8 GB on the full dataset, which does not fit alongside everything
+    else; densifying per batch costs ~1 MB. The tensors the model sees are
+    identical either way.
+    """
+
+    def __init__(self, X_sparse, y):
+        self.X = X_sparse.tocsr()
+        self.y = y
+
+    def __len__(self):
+        return self.X.shape[0]
+
+    def __getitem__(self, idxs):
+        # Paired with BatchSampler + batch_size=None, idxs is a list of indices.
+        rows = self.X[idxs].toarray()
+        return torch.from_numpy(rows).float(), self.y[idxs]
 
 
 class ResidualBlock(nn.Module):
@@ -80,8 +102,7 @@ class DeepNeuralNetworkRunner:
         self.vectorizer = HashingVectorizer(n_features=5000, stop_words="english", binary=True)
 
         train_documents = [item.summary for item in self.train_data]
-        X_train_np = self.vectorizer.fit_transform(train_documents)
-        self.X_train = torch.FloatTensor(X_train_np.toarray())
+        self.X_train_sparse = self.vectorizer.fit_transform(train_documents)
         y_train_np = np.array([float(item.price) for item in self.train_data])
         self.y_train = torch.FloatTensor(y_train_np).unsqueeze(1)
 
@@ -98,7 +119,7 @@ class DeepNeuralNetworkRunner:
         self.y_train_norm = (y_train_log - self.y_mean) / self.y_std
         self.y_val_norm = (y_val_log - self.y_mean) / self.y_std
 
-        self.model = DeepNeuralNetwork(self.X_train.shape[1])
+        self.model = DeepNeuralNetwork(self.X_train_sparse.shape[1])
         total_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
         print(f"Deep Neural Network created with {total_params:,} parameters")
 
@@ -116,8 +137,14 @@ class DeepNeuralNetworkRunner:
         self.optimizer = optim.AdamW(self.model.parameters(), lr=0.001, weight_decay=0.01)
         self.scheduler = CosineAnnealingLR(self.optimizer, T_max=10, eta_min=0)
 
-        self.train_dataset = TensorDataset(self.X_train, self.y_train_norm)
-        self.train_loader = DataLoader(self.train_dataset, batch_size=64, shuffle=True)
+        self.train_dataset = SparseBatchDataset(self.X_train_sparse, self.y_train_norm)
+        # batch_size=None because the BatchSampler already hands over index
+        # lists; the dataset densifies each batch itself.
+        self.train_loader = DataLoader(
+            self.train_dataset,
+            sampler=BatchSampler(RandomSampler(self.train_dataset), batch_size=64, drop_last=False),
+            batch_size=None,
+        )
 
     def train(self, epochs=5):
         for epoch in range(1, epochs + 1):
@@ -139,10 +166,17 @@ class DeepNeuralNetworkRunner:
                 self.optimizer.step()
                 train_losses.append(loss.item())
 
-            # Validation
+            # Validation, chunked: a single forward pass over a large validation
+            # set allocates activations for every row at once and exhausts GPU
+            # memory. Chunking changes nothing about the result.
             self.model.eval()
             with torch.no_grad():
-                val_outputs = self.model(self.X_val.to(self.device))
+                chunks = []
+                for start in range(0, self.X_val.shape[0], 512):
+                    batch = self.X_val[start : start + 512].to(self.device)
+                    chunks.append(self.model(batch))
+                val_outputs = torch.cat(chunks)
+
                 val_loss = self.loss_function(val_outputs, self.y_val_norm.to(self.device))
 
                 # Convert back to original scale for meaningful metrics
@@ -158,10 +192,28 @@ class DeepNeuralNetworkRunner:
             self.scheduler.step()
 
     def save(self, path):
-        torch.save(self.model.state_dict(), path)
+        # y_mean/y_std are part of the model, not of the run: inference() uses
+        # them to invert the log-normalisation. Saving weights alone means a
+        # later load() silently rescales predictions with whatever statistics
+        # the current training split happens to have.
+        torch.save(
+            {
+                "state_dict": self.model.state_dict(),
+                "y_mean": self.y_mean,
+                "y_std": self.y_std,
+            },
+            path,
+        )
 
     def load(self, path):
-        self.model.load_state_dict(torch.load(path, map_location=self.device))
+        checkpoint = torch.load(path, map_location=self.device, weights_only=False)
+        if isinstance(checkpoint, dict) and "state_dict" in checkpoint:
+            self.model.load_state_dict(checkpoint["state_dict"])
+            self.y_mean = torch.as_tensor(checkpoint["y_mean"])
+            self.y_std = torch.as_tensor(checkpoint["y_std"])
+        else:
+            # Legacy checkpoint: weights only, normalisation left as set up.
+            self.model.load_state_dict(checkpoint)
         self.model.to(self.device)
 
     def inference(self, item):

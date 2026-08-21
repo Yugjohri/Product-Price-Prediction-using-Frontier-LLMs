@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>What does this cost? — LLM price estimation</title>
+<meta name="description" content="Can a language model estimate product prices? A prompted LLM and a 289M-parameter network trained from scratch, measured against each other on identical products." />
+<style>
+  :root {
+    --bg: #0c0e14;
+    --surface: #151823;
+    --surface-2: #1d2130;
+    --surface-3: #242939;
+    --line: #272c3d;
+    --text: #e8eaf2;
+    --muted: #9aa2bd;
+    --faint: #6b7391;
+    --accent: #7c6cff;
+    --accent-soft: #7c6cff22;
+    --good: #3fcf8e;
+    --mid: #f0b429;
+    --bad: #f2607a;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1100px 520px at 12% -8%, #1e1b45 0%, transparent 60%),
+      radial-gradient(900px 480px at 92% 0%, #10314a 0%, transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font: 16px/1.6 ui-sans-serif, -apple-system, "Segoe UI", Roboto, Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding: 56px 22px 96px; }
+
+  /* ---------- hero ---------- */
+  .eyebrow {
+    display: inline-block; letter-spacing: .13em; text-transform: uppercase;
+    font-size: 11px; font-weight: 700; color: var(--accent);
+    background: var(--accent-soft); padding: 6px 12px; border-radius: 999px;
+  }
+  h1 { font-size: clamp(30px, 5.2vw, 50px); line-height: 1.08; margin: 20px 0 14px; letter-spacing: -0.025em; }
+  .lede { color: var(--muted); font-size: clamp(16px, 2vw, 19px); max-width: 62ch; margin: 0; }
+
+  .headline { display: flex; flex-wrap: wrap; gap: 14px; margin: 34px 0 0; }
+  .stat {
+    flex: 1 1 190px; background: linear-gradient(180deg, var(--surface-2), var(--surface));
+    border-radius: var(--radius); padding: 20px 22px;
+    box-shadow: 0 1px 0 #ffffff0d inset, 0 18px 40px -28px #000;
+  }
+  .stat b { display: block; font-size: clamp(26px, 4vw, 34px); letter-spacing: -0.02em; line-height: 1.1; }
+  .stat span { color: var(--faint); font-size: 12.5px; text-transform: uppercase; letter-spacing: .07em; }
+
+  /* ---------- sections ---------- */
+  section {
+    margin-top: 46px; background: var(--surface); border-radius: 22px; padding: 30px;
+    box-shadow: 0 1px 0 #ffffff0a inset, 0 30px 60px -45px #000;
+  }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+  h2 { font-size: 21px; margin: 0; letter-spacing: -0.01em; }
+  .tag { font-size: 11.5px; color: var(--faint); text-transform: uppercase; letter-spacing: .08em; }
+  .sec-sub { color: var(--muted); margin: 8px 0 24px; font-size: 15px; }
+
+  /* ---------- showcase ---------- */
+  .product {
+    background: var(--surface-2); border-radius: var(--radius); padding: 22px;
+    min-height: 150px; display: flex; flex-direction: column; justify-content: center;
+    transition: opacity .22s var(--ease);
+  }
+  .product.swapping { opacity: 0; }
+  .p-cat { font-size: 11.5px; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; font-weight: 600; }
+  .p-title { font-weight: 650; margin: 8px 0 10px; font-size: 17px; line-height: 1.35; }
+  /* Clamp to whole lines. A height-based mask cuts text mid-line, which reads
+     as a rendering glitch rather than deliberate truncation. */
+  .p-sum {
+    color: var(--muted); font-size: 14px; white-space: pre-wrap;
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5;
+    line-clamp: 5; overflow: hidden;
+  }
+
+  .guesses { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
+  .guesses:empty { margin-top: 0; }
+  .guess {
+    background: var(--surface-2); border-radius: var(--radius-sm); padding: 14px 16px;
+    border-left: 3px solid var(--line);
+    animation: rise .34s var(--ease) both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
+  .guess.truth { border-left-color: var(--text); background: #ffffff10; }
+  .guess.good { border-left-color: var(--good); }
+  .guess.mid  { border-left-color: var(--mid); }
+  .guess.bad  { border-left-color: var(--bad); }
+  .g-name { font-size: 11.5px; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+  .g-val { font-size: 23px; font-weight: 680; letter-spacing: -0.02em; margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .g-off { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .guess.good .g-off { color: var(--good); }
+  .guess.mid  .g-off { color: var(--mid); }
+  .guess.bad  .g-off { color: var(--bad); }
+
+  .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+  .tally { color: var(--muted); font-size: 14px; margin-left: auto; }
+  .tally b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .hint { color: var(--faint); font-size: 12.5px; }
+  kbd {
+    font: inherit; font-size: 11px; background: var(--surface-3); border: 1px solid var(--line);
+    border-bottom-width: 2px; border-radius: 5px; padding: 1px 6px; color: var(--muted);
+  }
+
+  /* ---------- controls ---------- */
+  button {
+    font: inherit; font-weight: 620; cursor: pointer; border: 0;
+    border-radius: 999px; padding: 12px 22px; color: #fff;
+    background: linear-gradient(180deg, #8b7cff, #6a58f5);
+    box-shadow: 0 10px 24px -12px #6a58f5cc;
+    transition: transform .14s var(--ease), filter .14s var(--ease), opacity .14s var(--ease);
+  }
+  button:hover:not(:disabled) { filter: brightness(1.09); transform: translateY(-1px); }
+  button:active:not(:disabled) { transform: translateY(0) scale(.985); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  button:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+  button.ghost {
+    background: var(--surface-2); color: var(--muted); box-shadow: none;
+    border: 1px solid var(--line);
+  }
+  button.ghost:hover:not(:disabled) { color: var(--text); background: var(--surface-3); }
+
+  textarea, select, input[type=password] {
+    width: 100%; font: inherit; color: var(--text); background: var(--surface-2);
+    border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 13px 15px;
+    outline: none; transition: border-color .14s var(--ease), box-shadow .14s var(--ease);
+  }
+  textarea { min-height: 104px; resize: vertical; }
+  textarea:focus, select:focus, input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  label { display: block; font-size: 12.5px; color: var(--faint); text-transform: uppercase; letter-spacing: .07em; margin: 0 0 7px; }
+  .field { margin-bottom: 16px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .tally { margin-left: 0; width: 100%; }
+  }
+
+  /* example chips: give people something to click instead of a blank box */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 18px; }
+  .chip {
+    font: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+    background: var(--surface-2); color: var(--muted); border: 1px solid var(--line);
+    border-radius: 999px; padding: 7px 14px; box-shadow: none;
+    transition: color .14s var(--ease), background .14s var(--ease), transform .14s var(--ease);
+  }
+  .chip:hover { color: var(--text); background: var(--surface-3); transform: translateY(-1px); }
+
+  .byok-note { font-size: 12.5px; color: var(--faint); margin: 0 0 18px; line-height: 1.55; }
+  .byok-note a { color: var(--accent); }
+  .byok-note strong { color: var(--muted); font-weight: 600; }
+
+  .result {
+    margin-top: 18px; background: var(--surface-2); border-radius: var(--radius);
+    padding: 20px 22px; display: none; animation: rise .3s var(--ease) both;
+  }
+  .result.show { display: block; }
+  .result .big { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .result .meta { color: var(--faint); font-size: 13px; margin-top: 6px; }
+  .result.err { border-left: 3px solid var(--mid); }
+  .result.err .big { font-size: 16.5px; font-weight: 600; color: var(--mid); line-height: 1.55; }
+  .result.err a { color: var(--accent); white-space: nowrap; }
+
+  .spinner {
+    display: inline-block; width: 13px; height: 13px; vertical-align: -1px; margin-right: 8px;
+    border: 2px solid #ffffff55; border-top-color: #fff; border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- table ---------- */
+  .scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 560px; }
+  th { text-align: left; font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--faint); font-weight: 600; padding: 0 14px 11px 0; }
+  td { padding: 13px 14px 13px 0; border-top: 1px solid var(--line); vertical-align: middle; }
+  td.num { font-variant-numeric: tabular-nums; font-weight: 640; }
+  .bar { height: 7px; border-radius: 99px; background: linear-gradient(90deg, var(--accent), #a99bff); min-width: 3px; }
+  .bar.best { background: linear-gradient(90deg, var(--good), #7fe3b6); }
+  .note { color: var(--faint); font-size: 13px; line-height: 1.65; margin-bottom: 0; }
+  tr.dead td { opacity: .6; }
+
+  footer { margin-top: 44px; color: var(--faint); font-size: 13.5px; text-align: center; line-height: 1.9; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .skeleton { color: var(--faint); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">Machine learning · price regression</span>
+    <h1>Can a language model tell you what something costs?</h1>
+    <p class="lede">
+      Estimating a price from a product description is a regression problem — LLMs
+      were never built for it. This pits prompted frontier models against a
+      289M-parameter network trained from scratch on 800,000 products, measured on
+      identical held-out items.
+    </p>
+    <div class="headline" id="headline">
+      <div class="stat"><b class="skeleton">—</b><span>loading</span></div>
+    </div>
+  </header>
+
+  <!-- ============ PART 1 — showcase ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Watch it work</h2>
+      <span class="tag">pre-computed · instant</span>
+    </div>
+    <p class="sec-sub">
+      Real products from the held-out test set. Have a guess yourself, then reveal what
+      each model said. Every answer was computed ahead of time, so this panel never
+      waits on an API and never rate-limits.
+    </p>
+
+    <div class="product" id="product">
+      <div class="p-title skeleton">Loading products…</div>
+    </div>
+    <div class="guesses" id="guesses"></div>
+
+    <div class="row">
+      <button id="primary">Reveal prices</button>
+      <button class="ghost" id="skip">Skip</button>
+      <span class="hint"><kbd>space</kbd> to continue</span>
+      <span class="tally" id="tally"></span>
+    </div>
+  </section>
+
+  <!-- ============ PART 2 — live ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Try your own</h2>
+      <span class="tag">live inference</span>
+    </div>
+    <p class="sec-sub">
+      This one really calls the model. Describe any product, or start from an example.
+    </p>
+
+    <div class="chips" id="chips"></div>
+
+    <div class="field">
+      <label for="desc">Product description</label>
+      <textarea id="desc" placeholder="Describe a product — the more detail, the better the estimate."></textarea>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label for="model">Model</label>
+        <select id="model"></select>
+      </div>
+      <div class="field">
+        <label for="key">Your API key <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="password" id="key" placeholder="only for the gated models" autocomplete="off" spellcheck="false" />
+      </div>
+    </div>
+
+    <p class="byok-note" id="byokNote">
+      The free model runs on my key. The larger ones need your own — it is sent with
+      that <strong>single request</strong>, used once, and never logged or stored.
+    </p>
+
+    <div class="row">
+      <button id="go">Estimate price</button>
+      <span class="hint"><kbd>ctrl</kbd> + <kbd>enter</kbd></span>
+    </div>
+    <div class="result" id="result"></div>
+  </section>
+
+  <!-- ============ results ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Measured results</h2>
+      <span class="tag" id="evalTag">held-out test set</span>
+    </div>
+    <p class="sec-sub">
+      Average absolute error in dollars — lower is better. Every number here was
+      produced by the code in this repository, on one machine, on the same products.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Approach</th><th>Avg error</th><th>Within 20%</th><th style="width:32%"></th></tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+      </table>
+    </div>
+    <p class="note" id="ftNote"></p>
+  </section>
+
+  <footer>
+    Built by Yug Johri ·
+    <a href="https://github.com/Yugjohri/Product-Price-Prediction-using-Frontier-LLMs">Source on GitHub</a>
+    <br />The free model runs on my key; larger models require your own.
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var data = null, current = null, revealed = false;
+  var shown = 0, within20 = 0, queue = [];
+  var DEMO_MODEL = "groq";
+
+  var $ = function (id) { return document.getElementById(id); };
+  var money = function (n) {
+    return "$" + Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // Same error banding the project's own evaluator uses.
+  function band(err, truth) {
+    if (err < 40 || err / truth < 0.2) return "good";
+    if (err < 80 || err / truth < 0.4) return "mid";
+    return "bad";
+  }
+
+  var LABELS = { groq: "GPT-OSS 20B", gpt41nano: "GPT-4.1 nano", dnn: "Neural net" };
+
+  // ---------- showcase ----------
+  // Shuffled queue rather than random picks, so nothing repeats until exhausted.
+  function refill() {
+    queue = data.items.slice();
+    for (var i = queue.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = queue[i]; queue[i] = queue[j]; queue[j] = t;
+    }
+  }
+
+  function nextProduct() {
+    if (!data || !data.items.length) return;
+    if (!queue.length) refill();
+    var el = $("product");
+    el.classList.add("swapping");
+    setTimeout(function () {
+      current = queue.pop();
+      revealed = false;
+      el.innerHTML =
+        '<div class="p-cat">' + esc(current.category) + "</div>" +
+        '<div class="p-title">' + esc(current.title) + "</div>" +
+        '<div class="p-sum">' + esc(current.summary) + "</div>";
+      el.classList.remove("swapping");
+      $("guesses").innerHTML = "";
+      $("primary").textContent = "Reveal prices";
+      $("skip").style.display = "";
+    }, 160);
+  }
+
+  function reveal() {
+    if (!current || revealed) return;
+    revealed = true;
+    var truth = current.price;
+    var parts = ['<div class="guess truth" style="animation-delay:0ms">' +
+                 '<div class="g-name">Actual price</div>' +
+                 '<div class="g-val">' + money(truth) + "</div></div>"];
+
+    Object.keys(LABELS).forEach(function (k, i) {
+      var g = current.guesses[k];
+      if (g === null || g === undefined) return;
+      var err = Math.abs(g - truth);
+      parts.push(
+        '<div class="guess ' + band(err, truth) + '" style="animation-delay:' + ((i + 1) * 70) + 'ms">' +
+          '<div class="g-name">' + LABELS[k] + "</div>" +
+          '<div class="g-val">' + money(g) + "</div>" +
+          '<div class="g-off">' + (g >= truth ? "+" : "−") + money(err).slice(1) + " off</div>" +
+        "</div>");
+    });
+    $("guesses").innerHTML = parts.join("");
+
+    var demo = current.guesses[DEMO_MODEL];
+    if (demo !== null && demo !== undefined) {
+      shown++;
+      if (Math.abs(demo - truth) / truth < 0.2) within20++;
+      $("tally").innerHTML = "<b>" + within20 + "</b> of <b>" + shown +
+        "</b> within 20% · " + LABELS[DEMO_MODEL];
+    }
+    $("primary").textContent = "Next product";
+    $("skip").style.display = "none";
+  }
+
+  function advance() { revealed ? nextProduct() : reveal(); }
+
+  // ---------- results table ----------
+  function renderResults(rows) {
+    var max = Math.max.apply(null, rows.map(function (r) { return r.avg_error; }));
+    var body = rows.map(function (r, i) {
+      return "<tr><td>" + esc(r.model) + "</td>" +
+             '<td class="num">' + money(r.avg_error) + "</td>" +
+             '<td class="num">' + r.hit_rate_pct + "%</td>" +
+             '<td><div class="bar' + (i === 0 ? " best" : "") +
+             '" style="width:' + Math.round((r.avg_error / max) * 100) + '%"></div></td></tr>';
+    }).join("");
+
+    body += '<tr class="dead"><td>GPT-4.1 nano (fine-tuned)</td>' +
+            '<td class="num">n/a</td><td class="num">n/a</td>' +
+            "<td>not reproducible — see below</td></tr>";
+    $("resultsBody").innerHTML = body;
+
+    $("ftNote").textContent =
+      "The fine-tuned row cannot be reproduced. OpenAI wound down self-serve " +
+      "fine-tuning on 7 May 2026; accounts that had not already run a job lost the " +
+      "ability to create one, and the API now returns 403 training_not_available.";
+
+    // Lead with the network's result, then the best LLM beside it so the
+    // comparison reads at a glance. Never show the same number twice.
+    var dnn = rows.filter(function (r) { return /neural/i.test(r.model); })[0];
+    var bestLLM = rows.filter(function (r) { return !/neural/i.test(r.model); })[0];
+    var lead = dnn || rows[0];
+
+    var cards = '<div class="stat"><b>' + money(lead.avg_error) +
+                "</b><span>neural net, from scratch</span></div>";
+    if (bestLLM && bestLLM !== lead) {
+      cards += '<div class="stat"><b>' + money(bestLLM.avg_error) +
+               "</b><span>best LLM &mdash; " + esc(bestLLM.model.split(" (")[0]) + "</span></div>";
+    }
+    cards += '<div class="stat"><b>' + lead.hit_rate_pct + '%</b><span>within 20% of actual</span></div>';
+    $("headline").innerHTML = cards;
+    $("evalTag").textContent = (data.aggregate[0] ? data.aggregate[0].n : "") + " products · held-out test set";
+  }
+
+  // ---------- live estimator ----------
+  var EXAMPLES = [
+    ["Wireless headphones", "Sony WH-1000XM4 wireless noise-cancelling over-ear headphones, 30-hour battery life, touch controls, foldable, black"],
+    ["Espresso machine", "Breville Bambino Plus espresso machine, stainless steel, 54mm portafilter, automatic milk texturing, 3-second heat-up"],
+    ["Office chair", "Ergonomic mesh office chair with adjustable lumbar support, 4D armrests, tilt lock and headrest, supports up to 130kg"],
+    ["USB-C cable", "6-foot braided USB-C to USB-C charging cable, 100W power delivery, USB 2.0 data transfer, pack of two"]
+  ];
+
+  function buildChips() {
+    $("chips").innerHTML = EXAMPLES.map(function (e, i) {
+      return '<button class="chip" type="button" data-i="' + i + '">' + esc(e[0]) + "</button>";
+    }).join("");
+    $("chips").addEventListener("click", function (ev) {
+      var b = ev.target.closest(".chip");
+      if (!b) return;
+      $("desc").value = EXAMPLES[+b.dataset.i][1];
+      $("desc").focus();
+    });
+  }
+
+  function loadModels() {
+    return fetch("/api/predict").then(function (r) { return r.json(); }).then(function (j) {
+      $("model").innerHTML = j.models.map(function (m) {
+        return '<option value="' + esc(m.id) + '">' + esc(m.label) + "</option>";
+      }).join("");
+      $("model").value = j.default;
+      syncKeyField();
+    }).catch(function () {
+      $("model").innerHTML = '<option value="gpt-oss-20b">GPT-OSS 20B - free, runs on my key</option>';
+    });
+  }
+
+  // Only draw attention to the key box when the chosen model actually needs one.
+  function syncKeyField() {
+    var needsKey = /need your own key/i.test($("model").selectedOptions[0] ? $("model").selectedOptions[0].text : "");
+    $("key").placeholder = needsKey ? "required for this model" : "not needed for the free model";
+    $("key").style.borderColor = needsKey && !$("key").value.trim() ? "var(--mid)" : "";
+  }
+
+  function showResult(html, isErr) {
+    var el = $("result");
+    el.className = "result show" + (isErr ? " err" : "");
+    el.innerHTML = html;
+  }
+
+  function estimate(isRetry) {
+    var desc = $("desc").value.trim();
+    if (!desc) {
+      showResult('<div class="big">Describe a product first — or tap an example above.</div>', true);
+      $("desc").focus();
+      return;
+    }
+
+    $("go").disabled = true;
+    $("go").innerHTML = '<span class="spinner"></span>' + (isRetry ? "Retrying…" : "Estimating…");
+
+    fetch("/api/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ description: desc, model: $("model").value, api_key: $("key").value.trim() })
+    }).then(function (r) {
+      return r.json().then(function (j) { return { status: r.status, body: j }; });
+    }).then(function (res) {
+      var b = res.body;
+      if (res.status === 200) {
+        showResult('<div class="big">' + money(b.price) + "</div>" +
+          '<div class="meta">' + esc(b.model_label) + " · " + b.seconds + "s" +
+          (b.byok ? " · your key" : "") + "</div>", false);
+        return;
+      }
+      // One automatic retry when the shared free tier is busy.
+      if (res.status === 429 && b.retry && !isRetry) {
+        showResult('<div class="big">' + esc(b.message) + "</div>", true);
+        setTimeout(function () { estimate(true); }, 4000);
+        return;
+      }
+      var extra = b.console ? ' <a href="' + esc(b.console) + '" target="_blank" rel="noopener">Get a key →</a>' : "";
+      showResult('<div class="big">' + esc(b.message || "Something went wrong.") + extra + "</div>", true);
+    }).catch(function () {
+      showResult('<div class="big">Could not reach the server. Check your connection and try again.</div>', true);
+    }).finally(function () {
+      $("go").disabled = false;
+      $("go").textContent = "Estimate price";
+    });
+  }
+
+  // ---------- wiring ----------
+  $("primary").addEventListener("click", advance);
+  $("skip").addEventListener("click", nextProduct);
+  $("go").addEventListener("click", function () { estimate(false); });
+  $("model").addEventListener("change", syncKeyField);
+  $("key").addEventListener("input", syncKeyField);
+  $("desc").addEventListener("keydown", function (e) {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") estimate(false);
+  });
+
+  // Space advances the showcase, but never while typing in a field.
+  document.addEventListener("keydown", function (e) {
+    if (e.code !== "Space") return;
+    var t = e.target.tagName;
+    if (t === "TEXTAREA" || t === "INPUT" || t === "SELECT" || t === "BUTTON") return;
+    e.preventDefault();
+    advance();
+  });
+
+  buildChips();
+  loadModels();
+
+  fetch("showcase.json")
+    .then(function (r) { return r.json(); })
+    .then(function (j) { data = j; renderResults(j.aggregate); refill(); nextProduct(); })
+    .catch(function () {
+      $("product").innerHTML = '<div class="p-title">Could not load the showcase data.</div>';
+      $("primary").disabled = true; $("skip").disabled = true;
+    });
+})();
+</script>
+</body>
+</html>

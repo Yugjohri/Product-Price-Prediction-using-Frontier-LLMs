@@ -1,0 +1,42 @@
+[
+  {
+    "n": 200,
+    "avg_error": 46.77,
+    "rmsle": 0.5332,
+    "hit_rate_pct": 67.0,
+    "model": "Deep Neural Network",
+    "notes": "HashingVectorizer(5000) + 289M-param residual MLP, 10 epochs on 800,000 items, trained locally on an RTX 5070 Ti",
+    "total_seconds": 0.5,
+    "seconds_per_item": 0.002
+  },
+  {
+    "n": 200,
+    "avg_error": 63.95,
+    "rmsle": 0.6284,
+    "hit_rate_pct": 60.0,
+    "model": "GPT-4.1-nano (prompted)",
+    "notes": "prompt-only, no training, temperature=0",
+    "total_seconds": 25.3,
+    "seconds_per_item": 0.127
+  },
+  {
+    "n": 200,
+    "avg_error": 77.84,
+    "rmsle": 0.6965,
+    "hit_rate_pct": 60.0,
+    "model": "GPT-5 nano",
+    "notes": "prompt-only via the deployed endpoint's code path, reasoning_effort=low",
+    "total_seconds": 99.9,
+    "seconds_per_item": 0.499
+  },
+  {
+    "n": 200,
+    "avg_error": 83.95,
+    "rmsle": 0.7879,
+    "hit_rate_pct": 53.0,
+    "model": "Groq openai/gpt-oss-20b",
+    "notes": "prompt-only, no training, reasoning_effort=low, free tier paced to 26 req/min",
+    "total_seconds": 459.7,
+    "seconds_per_item": 2.298
+  }
+]

@@ -1,0 +1,707 @@
+{
+ "eval_size": 60,
+ "aggregate": [
+  {
+   "n": 200,
+   "avg_error": 46.77,
+   "rmsle": 0.5332,
+   "hit_rate_pct": 67.0,
+   "model": "Deep Neural Network",
+   "notes": "HashingVectorizer(5000) + 289M-param residual MLP, 10 epochs on 800,000 items, trained locally on an RTX 5070 Ti",
+   "total_seconds": 0.5,
+   "seconds_per_item": 0.002
+  },
+  {
+   "n": 200,
+   "avg_error": 63.95,
+   "rmsle": 0.6284,
+   "hit_rate_pct": 60.0,
+   "model": "GPT-4.1-nano (prompted)",
+   "notes": "prompt-only, no training, temperature=0",
+   "total_seconds": 25.3,
+   "seconds_per_item": 0.127
+  },
+  {
+   "n": 200,
+   "avg_error": 77.84,
+   "rmsle": 0.6965,
+   "hit_rate_pct": 60.0,
+   "model": "GPT-5 nano",
+   "notes": "prompt-only via the deployed endpoint's code path, reasoning_effort=low",
+   "total_seconds": 99.9,
+   "seconds_per_item": 0.499
+  },
+  {
+   "n": 200,
+   "avg_error": 83.95,
+   "rmsle": 0.7879,
+   "hit_rate_pct": 53.0,
+   "model": "Groq openai/gpt-oss-20b",
+   "notes": "prompt-only, no training, reasoning_effort=low, free tier paced to 26 req/min",
+   "total_seconds": 459.7,
+   "seconds_per_item": 2.298
+  }
+ ],
+ "items": [
+  {
+   "title": "Old Blood Noise Excess V2 Distortion Chorus/Delay Pedal",
+   "summary": "Title: Excess V2 Distortion/Modulation Pedal  \nCategory: Music Pedals  \nBrand: Old Blood Noise  \nDescription: A versatile pedal offering distortion and three modulation modes\u2014delay, chorus, and harmonized fifths\u2014with full control over signal routing and expression.  \nDetails: Features include separate gain, tone, and volume controls; time, depth, and volume per modulation; order switching, soft\u2011touch bypass, and expression jack for dynamic control.",
+   "category": "Musical_Instruments",
+   "price": 219.0,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 150.0,
+    "dnn": 168.33
+   }
+  },
+  {
+   "title": "telpo Headlight Assembly Fit For 15 Camry 16 Camry 17 Toyota Camry 2015 Camry 2016 Camry 2017 Toyota Camry Dri",
+   "summary": "Title: Telpo Headlight Assembly for 2015\u20112017 Toyota Camry  \nCategory: Automotive Accessories  \nBrand: Telpo  \nDescription: Dual headlight assembly that fits the 2015\u20112017 Toyota Camry front driver and passenger sides.  \nDetails: Direct replacement with DOT & SAE\u2011certified lenses, high/low beam, waterproof construction, and a 1\u2011year limited warranty.",
+   "category": "Automotive",
+   "price": 115.99,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 150.0,
+    "dnn": 160.69
+   }
+  },
+  {
+   "title": "NewPower99 Battery Kit for Samsung Galaxy Tab S3 9.7 SM-T820, SM-T825, SM-T827 with Tools, Video Instructions,",
+   "summary": "Title: NewPower99 6000\u202fmAh Battery Replacement Kit for Samsung Galaxy Tab S3 9.7  \nCategory: Electronics  \nBrand: NewPower99  \nDescription: Replace or backup the battery on your Samsung Galaxy Tab S3 9.7 with a 6000\u202fmAh lithium\u2011polymer pack.  \nDetails: Includes a new battery, step\u2011by\u2011step video instructions, special opening tools, and a one\u2011year money\u2011back guarantee.",
+   "category": "Electronics",
+   "price": 54.95,
+   "guesses": {
+    "groq": 35.0,
+    "gpt41nano": 30.0,
+    "dnn": 42.81
+   }
+  },
+  {
+   "title": "EXMAX NG-10X Fresnel Lens Focusing Adapter Fresnel Spot S-Mount Adapter Attachment 10-40\u00b0 5X Brighter Focus Le",
+   "summary": "Title: EXMAX NG-10X Fresnel Lens Focusing Adapter  \nCategory: Lighting Accessories  \nBrand: EXMAX  \nDescription: A telescoping Bowens\u2011mount adapter that concentrates LED studio light into a 10\u201340\u00b0 spot, boosting brightness 5\u201310\u00d7 and offering quick color filter swaps.  \nDetails: Features a durable black plastic construction, adjustable focus, integrated four\u2011color gel filters, and compatibility with most LED or flash lights up to 150\u202fW.",
+   "category": "Electronics",
+   "price": 69.98,
+   "guesses": {
+    "groq": 45.0,
+    "gpt41nano": 50.0,
+    "dnn": 130.12
+   }
+  },
+  {
+   "title": "Stand for Raven Pro Document Scanner - Provides Better Seated Viewing Angle for Touchscreen (Scanner Sold Sepa",
+   "summary": "Title: Raven Pro Document Scanner Stand  \nCategory: Accessories  \nBrand: Raven  \nDescription: Elevates the Raven Pro Document Scanner to provide a comfortable seated viewing angle.  \nDetails: Enhances visibility of the LCD touchscreen for easy use and includes a stable, compact design.",
+   "category": "Office_Products",
+   "price": 29.85,
+   "guesses": {
+    "groq": 45.0,
+    "gpt41nano": 50.0,
+    "dnn": 39.31
+   }
+  },
+  {
+   "title": "RBC12-UPC Replacement Battery Cartridge - See Below for Full Compatibility List",
+   "summary": "Title: UPC RBC12-UPC Replacement Battery Cartridge  \nCategory: Electronics  \nBrand: UPC  \nDescription: A precharged, maintenance\u2011free lead\u2011acid battery cartridge for APC RBC12 UPS systems that delivers reliable power during outages.  \nDetails: Sealed, leak\u2011proof design with all connectors, cable, and fuses included for instant plug\u2011and\u2011play, hot\u2011swappable installation, and a 2\u2011year limited warranty.",
+   "category": "Electronics",
+   "price": 229.99,
+   "guesses": {
+    "groq": 140.0,
+    "gpt41nano": 150.0,
+    "dnn": 69.8
+   }
+  },
+  {
+   "title": "SuppliesOutlet Compatible Toner Cartridge Replacement for Lexmark X651 / X651A11A / X651H04A / X651H11A / X651",
+   "summary": "Title: Lexmark X651 Compatible Toner Cartridge \u2013 Black, 1 Pack  \nCategory: Office Supplies  \nBrand: SuppliesOutlet  \nDescription: High\u2011yield, OEM\u2011compatible toner cartridge for Lexmark X651 series, delivering up to 25,000 pages.  \nDetails: Features a 1\u2011year performance guarantee, 25,000 page yield at 5% coverage, and uses high\u2011quality new/recycled components.",
+   "category": "Office_Products",
+   "price": 144.29,
+   "guesses": {
+    "groq": 135.0,
+    "gpt41nano": 80.0,
+    "dnn": 93.86
+   }
+  },
+  {
+   "title": "ACDelco GM Original Equipment FW339 Front Wheel Hub and Bearing Assembly with Wheel Speed Sensor and Wheel Stu",
+   "summary": "Title: ACDelco GM FW339 Front Wheel Hub & Bearing Assembly  \nCategory: Automotive Parts  \nBrand: ACDelco  \nDescription: Original equipment wheel hub and bearing assembly with integrated wheel speed sensor for GM vehicles.  \nDetails: Features dual sealed ball bearings, lifetime lubrication, and factory-fit wheel studs.",
+   "category": "Automotive",
+   "price": 215.33,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 150.0,
+    "dnn": 253.05
+   }
+  },
+  {
+   "title": "8544771 Dryer Heating Element, 279816 Thermostat Cut Off,279973 3392519 Dryer Thermal Fuse Compatible with may",
+   "summary": "Title: Dryer Heating Element & Thermostat/Fuse Kit  \nCategory: Electronics  \nBrand: SUMNEW  \nDescription: A complete replacement kit for dryer heating elements, thermostats, and thermal fuses compatible with major brands.  \nDetails: Includes a durable metal heating element, 279816 thermostat cut\u2011off, and 279973 thermal fuse for reliable dryer operation.",
+   "category": "Appliances",
+   "price": 35.74,
+   "guesses": {
+    "groq": 35.0,
+    "gpt41nano": 25.0,
+    "dnn": 26.75
+   }
+  },
+  {
+   "title": "Pump Head TBVECHI 175PSI 4KW 5.5HP 21CFM V Type\u00a0Twin Cylinder\u00a0 Air Compressor Pump Head Double Stage",
+   "summary": "Title: High\u2011Efficiency Twin\u2011Cylinder Air Compressor Pump Head  \nCategory: Industrial Equipment  \nBrand: Unknown  \nDescription: A double\u2011stage V\u2011type air compressor pump head delivering 21\u202fCFM at 175\u202fPSI with 4\u202fkW (5.5\u202fHP) power.  \nDetails: Features high\u2011precision valve steel, strong cooling blades, low noise operation, and energy\u2011efficient design for reliable, fast inflation.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 329.9,
+   "guesses": {
+    "groq": 950.0,
+    "gpt41nano": 1200.0,
+    "dnn": 403.62
+   }
+  },
+  {
+   "title": "Bam France 2002XL Contoured Hightech Black Carbon-Look 4/4 Violin Case",
+   "summary": "Title: Bam France 2002XL Contoured Hightech 4/4 Violin Case  \nCategory: Musical Instruments  \nBrand: Bam France  \nDescription: Ultra\u2011light, shock\u2011resistant case for 4/4 violins featuring a sleek black carbon\u2011look exterior and contoured interior for maximum protection.  \nDetails: 3.5\u2011lb, 30\u00d712\u00d79 in, three\u2011layer construction (AIREX, ABS, PVC), foam suspension, two bow holders, accessory pouch, and anti\u2011skid rubber guards.",
+   "category": "Musical_Instruments",
+   "price": 713.0,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 350.0,
+    "dnn": 823.44
+   }
+  },
+  {
+   "title": "Metabo HPT 36V MultiVolt\u2122 Cordless Rotary Hammer Drill Kit | SDS Plus | 1-1/8-Inch | Reactive Force Control | ",
+   "summary": "Title: Metabo HPT 36V MultiVolt Cordless Rotary Hammer  \nCategory: Power Tools  \nBrand: Metabo HPT  \nDescription: A 36V brushless rotary hammer that delivers high impact energy and versatile power with both cordless and AC plug-in options.  \nDetails: Features Reactive Force Control for safety, three speed modes, ergonomic low-vibration handle, one-push bit change, and built-in LED lighting.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 379.0,
+   "guesses": {
+    "groq": 280.0,
+    "gpt41nano": 350.0,
+    "dnn": 253.96
+   }
+  },
+  {
+   "title": "46mm Digital Pro High-Resolution Close-Up Macro Filter Set (+1, 2, 4, and +10 Diopters) with Filter Carry Case",
+   "summary": "Title: UltraPro 46mm Close\u2011Up Macro Filter Kit  \nCategory: Photography Accessories  \nBrand: Ultra Pro  \nDescription: A set of four high\u2011resolution close\u2011up filters (+1, +2, +4, +10 diopters) that attach to 46\u202fmm lenses, paired with a durable nylon carry case.  \nDetails: Double\u2011threaded design allows stacking for higher magnification and compatibility with additional optics such as polarizers; features multi\u2011coating for sharp, clear images.",
+   "category": "Electronics",
+   "price": 19.99,
+   "guesses": {
+    "groq": 85.0,
+    "gpt41nano": 30.0,
+    "dnn": 42.9
+   }
+  },
+  {
+   "title": "Innovative Percussion CB-6 Chamois Bass Drum Mallet (Extra Hard)",
+   "summary": "Title: CB-6 Extra Hard Chamois Bass Drum Mallet  \nCategory: Musical Instruments  \nBrand: Innovative Percussion  \nDescription: A heavy, red\u2011oak\u2011handled mallet with a chamois\u2011covered wooden ball core for powerful, articulate bass drum strikes.  \nDetails: Features a felt liner, 1\u201d handle, and a dense core that delivers a large, crisp sound.",
+   "category": "Musical_Instruments",
+   "price": 54.32,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 35.0,
+    "dnn": 53.34
+   }
+  },
+  {
+   "title": "Panasonic KX-TG6511B DECT 6.0 PLUS Expandable Digital Cordless Phone, 1 Handset, Black",
+   "summary": "Title: Panasonic KX-DECT 6.0 PLUS Digital Cordless Phone  \nCategory: Electronics  \nBrand: Panasonic  \nDescription: A single\u2011handset cordless phone with DECT 6.0 PLUS technology for clear, extended-range communication.  \nDetails: Includes a headset jack, non\u2011slip handset design, and eco\u2011friendly power\u2011saving mode.",
+   "category": "Office_Products",
+   "price": 79.2,
+   "guesses": {
+    "groq": 35.0,
+    "gpt41nano": 50.0,
+    "dnn": 61.12
+   }
+  },
+  {
+   "title": "LOVE MEI Galaxy S10 Lite Case, Military Heavy Duty Shockproof Dust/Dirt Proof Hybrid Aluminum Metal+Silicone+T",
+   "summary": "Title: LOVE MEI Galaxy S10 Lite Heavy Duty Shockproof Case  \nCategory: Electronics  \nBrand: LOVE MEI  \nDescription: A rugged, waterproof case that combines a metal frame, silicone bumper, and built\u2011in tempered glass to protect the Samsung Galaxy S10 Lite from drops, dust, and splashes.  \nDetails: Features military\u2011grade impact resistance, raised edge screen protection, wireless charging compatibility, and easy button access.",
+   "category": "Cell_Phones_and_Accessories",
+   "price": 32.98,
+   "guesses": {
+    "groq": 30.0,
+    "gpt41nano": 25.0,
+    "dnn": 30.85
+   }
+  },
+  {
+   "title": "GJY Portable TV,10.6 inch Mini TV for ATSC Digital Tuner,Built-in Rechargeable Battery,2 Antenna,USB/TF Card S",
+   "summary": "Title: GJY 10.6\" Portable TV with Built\u2011in ATSC Tuner  \nCategory: Electronics  \nBrand: GJY  \nDescription: A compact 10.6\" LCD TV that works on ATSC digital signals and includes a rechargeable battery for on\u2011the\u2011go viewing.  \nDetails: Features dual antennas, USB/TF card slots, AV and HDMI inputs, 12V power compatibility, and built\u2011in speakers for versatile use in home or outdoor settings.",
+   "category": "Electronics",
+   "price": 79.36,
+   "guesses": {
+    "groq": 180.0,
+    "gpt41nano": 120.0,
+    "dnn": 107.67
+   }
+  },
+  {
+   "title": "LD Products Compatible Toner Cartridge Replacement for HP 94X CF294X High Yield (Black) for use in Laserjet Pr",
+   "summary": "Title: LD Products High Yield Toner Cartridge \u2013 Black  \nCategory: Office Supplies  \nBrand: LD Products  \nDescription: A high-yield replacement toner cartridge designed for HP LaserJet Pro printers.  \nDetails: Compatible with HP LaserJet Pro M118dw, M148dw, and M148fdw, offering a 2,800-page yield and a shelf life of 24-36 months.",
+   "category": "Office_Products",
+   "price": 49.98,
+   "guesses": {
+    "groq": 80.0,
+    "gpt41nano": 35.0,
+    "dnn": 27.7
+   }
+  },
+  {
+   "title": "APS iBoard 6-inch Aluminum (Black Powder Coated Flat Style) Running Boards Nerf Bars Side Steps Step Rails Com",
+   "summary": "Title: APS iBoard 6\u2011inch Aluminum Running Boards  \nCategory: Automotive Accessories  \nBrand: APS  \nDescription: Heavy\u2011duty 6\u2011inch aluminum running boards for Nissan Frontier Crew Cab, finished in matte black powder coating.  \nDetails: Features anti\u2011slip tread, aircraft\u2011grade T6061 aluminum construction, and factory\u2011style metal backsplash with tapered ends for a sleek look.",
+   "category": "Automotive",
+   "price": 210.23,
+   "guesses": {
+    "groq": 135.0,
+    "gpt41nano": 250.0,
+    "dnn": 252.86
+   }
+  },
+  {
+   "title": "PEMP E65 E66 CDC Simulate Optical Fiber Box for BMW E65 aux Adapter",
+   "summary": "Title: PEMP E65/E66 Optical Fiber Box for BMW  \nCategory: Automotive Electronics  \nBrand: PEMP  \nDescription: Adds an aux-compatible optical fiber input to BMW E65/E66 models for Android screen audio.  \nDetails: Connects to the car\u2019s ACC power, replaces the CDC channel, and enables external audio playback.",
+   "category": "Electronics",
+   "price": 119.0,
+   "guesses": {
+    "groq": 55.0,
+    "gpt41nano": 150.0,
+    "dnn": 70.83
+   }
+  },
+  {
+   "title": "Intermatic PX300 12V 300W Transformer with Automatic Circuit Breaker , Beige",
+   "summary": "Title: Intermatic PX300 12V 300W Transformer with Built\u2011In Circuit Breaker  \nCategory: Electronics  \nBrand: Intermatic  \nDescription: A 12\u2011V transformer that safely powers pool and garden lights with a built\u2011in circuit breaker.  \nDetails: Features a grounded shield, automatic overload protection, and a compact 7.25\" high, 5.25\" wide, 4.5\" deep enclosure.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 134.0,
+   "guesses": {
+    "groq": 35.0,
+    "gpt41nano": 80.0,
+    "dnn": 174.16
+   }
+  },
+  {
+   "title": "CORSAIR Dominator Platinum RGB 32GB (2x16GB) DDR4 3200 (PC4-28800) C16 1.35V AMD Optimized Memory- Black",
+   "summary": "Title: Dominator Platinum RGB 32GB DDR4 3200MHz  \nCategory: Computer Memory  \nBrand: Corsair  \nDescription: 32\u202fGB of high\u2011performance DDR4 memory with 3200\u202fMHz speed, designed for AMD optimized systems.  \nDetails: Features dual 16\u202fGB modules, 12 individually addressable RGB LEDs, DHX cooling PCB, and Intel XMP\u202f2.0 compatibility.",
+   "category": "Electronics",
+   "price": 124.0,
+   "guesses": {
+    "groq": 225.0,
+    "gpt41nano": 150.0,
+    "dnn": 162.75
+   }
+  },
+  {
+   "title": "HK SYSTEMS 13\" Heavy Duty Black \"Push\" Open Cash Drawer, 4B5C with Under Counter Mounting Metal bracket",
+   "summary": "Title: HK 13\" Heavy Duty Black Push-Open Cash Drawer  \nCategory: Retail Hardware  \nBrand: HK  \nDescription: A compact 13\" black metal cash drawer that opens manually with a push mechanism and mounts under counter with a metal bracket.  \nDetails: Features a 4-bill/5-coin capacity, 2 media slots, a 3-position lock, and includes a key lock for secure operation.",
+   "category": "Office_Products",
+   "price": 84.95,
+   "guesses": {
+    "groq": 180.0,
+    "gpt41nano": 150.0,
+    "dnn": 74.36
+   }
+  },
+  {
+   "title": "SKB iSeries 3i-13096-6KP Case for BlackMagic Design Pocket Cinema Camera 6K Pro",
+   "summary": "Title: SKB iSeries 3i-13096-6KP Camera Case  \nCategory: Photography Accessories  \nBrand: SKB Cases  \nDescription: A MIL\u2011STD 810G waterproof case with custom foam interior designed for the Blackmagic Design Pocket Cinema Camera 6K Pro, featuring lens, battery, and memory card compartments plus an extra lens slot.  \nDetails: Ultra\u2011high\u2011strength polypropylene construction, gasket\u2011sealed, water and dust tight, with padlock loops, trigger release latches, and an automatic pressure equalization valve.",
+   "category": "Electronics",
+   "price": 174.99,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 250.0,
+    "dnn": 320.43
+   }
+  },
+  {
+   "title": "Bam Trekking 3027SB Single Black Clarinet Case",
+   "summary": "Title: Bam Trekking 3027SB Black Clarinet Backpack Case  \nCategory: Musical Instruments  \nBrand: Bam  \nDescription: A waterproof, lightweight backpack case that securely cradles a clarinet with a molded polyurethane foam insert for thermal shock protection.  \nDetails: Features 2000\u2011denier Cordura fabric, adjustable padded shoulder straps, a removable handle, an expandable sheet\u2011music pocket, and space for two barrels.",
+   "category": "Musical_Instruments",
+   "price": 332.0,
+   "guesses": {
+    "groq": 140.0,
+    "gpt41nano": 150.0,
+    "dnn": 220.91
+   }
+  },
+  {
+   "title": "DEWALT 20V MAX* XR Impact Driver with Bluetooth Kit (DCF888P2BT)",
+   "summary": "Title: DEWALT 20V MAX XR Impact Driver with Bluetooth Kit  \nCategory: Power Tools  \nBrand: DEWALT  \nDescription: A lightweight, 20V brushless impact driver that connects to the Tool Connect app for real\u2011time tracking, diagnostics, and custom settings.  \nDetails: Includes a 5\u2011Ah XR battery, charger, and a 3\u2011year warranty, offering variable speed, 75% longer run time, and compact 5.3\u2011in design for tight spaces.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 452.53,
+   "guesses": {
+    "groq": 210.0,
+    "gpt41nano": 150.0,
+    "dnn": 440.06
+   }
+  },
+  {
+   "title": "Mini PC, Kinupute Desktop Computer E3-1231V3 3.4-3.8GHz, Windows 11 Pro, 16G RAM, 256G SSD, Discrete Graphics ",
+   "summary": "Title: Compact High\u2011Performance Mini PC  \nCategory: Electronics  \nBrand: Kinupute  \nDescription: Powerful mini desktop with Intel Xeon E3\u20111231v3, 16\u202fGB RAM, 256\u202fGB SSD, and GeForce GT\u202f1030 2\u202fGB GPU, running Windows\u202f11\u202fPro.  \nDetails: Supports dual 4K displays via HDMI/DVI, dual\u2011band Wi\u2011Fi, Bluetooth\u202f4.0, Gigabit Ethernet, and multiple USB ports for versatile gaming, office, and server use.",
+   "category": "Electronics",
+   "price": 495.0,
+   "guesses": {
+    "groq": 750.0,
+    "gpt41nano": 900.0,
+    "dnn": 268.52
+   }
+  },
+  {
+   "title": "June Garden 12\" Sweet Dolly Charlotte - Stuffed Ultra Soft Baby Bunny Doll for Birth and Up - Removable Pink O",
+   "summary": "Title: June Garden Sweet Dolly Charlotte 10\" Soft Bunny Doll  \nCategory: Toys & Games \u2013 Plush Toys  \nBrand: June Garden  \nDescription: A 10\u2011inch ultra\u2011soft rabbit plush doll perfect for newborns and toddlers.  \nDetails: Features a removable fleece jumpsuit, embroidered eyes, and a warm smile for gentle play and imaginative role\u2011play.",
+   "category": "Toys_and_Games",
+   "price": 19.99,
+   "guesses": {
+    "groq": 30.0,
+    "gpt41nano": 15.0,
+    "dnn": 31.09
+   }
+  },
+  {
+   "title": "Aolemi Oil Rubbed Bronze Single Function Freestanding Tub Filler Floor Mounted Single Handle Bathtub Faucet Wi",
+   "summary": "Title: Oil\u2011Rubbed Bronze Freestanding Tub Filler  \nCategory: Plumbing Fixtures  \nBrand: Aolemi  \nDescription: A single\u2011handle, floor\u2011mounted bathtub faucet in oil\u2011rubbed bronze finish.  \nDetails: Made from solid brass, it offers a sleek, modern look with corrosion\u2011resistant construction and easy DIY installation.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 98.65,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 250.0,
+    "dnn": 154.71
+   }
+  },
+  {
+   "title": "Clementoni 39132.5\u00a0Jigsaw Puzzle 1,000\u00a0Pieces The Brilliance",
+   "summary": "Title: Clementoni 1000\u2011Piece Jigsaw Puzzle \u2013 The Brilliance  \nCategory: Toys & Games  \nBrand: Clementoni  \nDescription: A 1,000\u2011piece jigsaw puzzle featuring a vibrant art theme suitable for beginners to adults.  \nDetails: Designed for ages 9 and up, this puzzle offers an engaging challenge while encouraging creativity and patience.",
+   "category": "Toys_and_Games",
+   "price": 79.95,
+   "guesses": {
+    "groq": 25.0,
+    "gpt41nano": 15.0,
+    "dnn": 25.67
+   }
+  },
+  {
+   "title": "10GBase-LR SFP+ Transceiver, Handar 10GB 1310nm, Single Mode Fiber, Compatible with Cisco, Ubiquiti, UniFi UF-",
+   "summary": "Title: Handar 10GBase\u2011LR SFP+ Transceiver  \nCategory: Networking  \nBrand: Handar  \nDescription: 10GBase\u2011LR SFP+ module for single\u2011mode fiber, 1310\u202fnm wavelength, supporting up to 10\u202fkm.  \nDetails: LC duplex connector, fully compatible with Cisco, Ubiquiti, UniFi UF\u2011SM\u201110G and other open\u2011switch platforms.",
+   "category": "Electronics",
+   "price": 19.99,
+   "guesses": {
+    "groq": 35.0,
+    "gpt41nano": 50.0,
+    "dnn": 45.11
+   }
+  },
+  {
+   "title": "Deco Mount Pro Tripod Microphone Stand with Boom Arm and Pop Filter Bundle",
+   "summary": "Title: Deco Mount Pro Tripod Mic Stand Bundle  \nCategory: Audio Equipment  \nBrand: Deco Mount  \nDescription: A lightweight, adjustable tripod mic stand with a boom arm and universal pop filter for professional recording.  \nDetails: Features durable construction, leg adjustment for uneven surfaces, a double\u2011layer pop filter with goose neck, and a microfiber cleaning cloth.",
+   "category": "Musical_Instruments",
+   "price": 59.95,
+   "guesses": {
+    "groq": 180.0,
+    "gpt41nano": 75.0,
+    "dnn": 129.11
+   }
+  },
+  {
+   "title": "GanFindX Portable Car Hand Controls for Disabled Drivers, Handicap Driving Hand Controlled Drive Assist for In",
+   "summary": "Title: GanFindX Portable Hand Control System  \nCategory: Automotive Accessories  \nBrand: GanFindX  \nDescription: A lightweight, tool\u2011free hand control device that lets drivers operate the accelerator and brake with their hands.  \nDetails: Constructed from aluminum alloy and stainless steel, adjustable length (51\u201170\u202fcm), comes with a soft carry bag, and is compatible with most LHD/RHD vehicles.",
+   "category": "Automotive",
+   "price": 159.9,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 150.0,
+    "dnn": 21.42
+   }
+  },
+  {
+   "title": "KOMPUTERBAY 4GB 2X 2GB DDR2 1066MHz PC2-8500 DDR2 1066 (240 PIN) DIMM Desktop Memory with Heatspreaders",
+   "summary": "Title: 4GB DDR2 1066MHz Desktop Memory Kit  \nCategory: Computer Components  \nBrand: Komputerbay  \nDescription: Dual 2GB DDR2 1066MHz modules in a 4GB kit for desktop systems.  \nDetails: Heatspreaders on each DIMM, 240-pin PC2-8500, dual\u2011channel support, lifetime warranty.",
+   "category": "Electronics",
+   "price": 80.34,
+   "guesses": {
+    "groq": 80.0,
+    "gpt41nano": 30.0,
+    "dnn": 36.6
+   }
+  },
+  {
+   "title": "Scranton & Co 3 Drawer Mobile File Cabinet in Black",
+   "summary": "Title: 3-Drawer Mobile File Cabinet  \nCategory: Office Furniture  \nBrand: Scranton & Co  \nDescription: A slim, lockable file cabinet with three high\u2011side drawers, ideal for small home or office spaces.  \nDetails: Features smooth glide drawers, casters for easy mobility, and a non\u2011porous painted steel finish.",
+   "category": "Office_Products",
+   "price": 115.35,
+   "guesses": {
+    "groq": 199.0,
+    "gpt41nano": 150.0,
+    "dnn": 104.91
+   }
+  },
+  {
+   "title": "Canon EOS Rebel T7 Digital SLR Camera with EF-S 18-55mm IS II (2727C00 USA), Canon EF 75-300mm Lens and 500mm ",
+   "summary": "Title: Canon EOS Rebel T7 DSLR Bundle with EF-S 18\u201155mm, EF 75\u2011300mm, 500mm Lens & T\u2011Mount Adapter  \nCategory: Camera & Photo Equipment  \nBrand: Canon  \nDescription: 24\u2011megapixel APS\u2011C DSLR kit featuring a versatile zoom range, 1080p video, and Wi\u2011Fi/NFC connectivity.  \nDetails: Includes EF\u2011mount lenses, professional accessories, and a 500mm preset lens with a T\u2011mount adapter for extended reach.",
+   "category": "Electronics",
+   "price": 819.0,
+   "guesses": {
+    "groq": 1350.0,
+    "gpt41nano": 600.0,
+    "dnn": 699.34
+   }
+  },
+  {
+   "title": "Evergreen HSHB2005 Cylinder Head Gasket Set Head Bolt",
+   "summary": "Title: Evergreen Cylinder Head Gasket Set & Head Bolts  \nCategory: Automotive  \nBrand: Evergreen  \nDescription: Premium head gasket set and head bolts engineered for precise OEM fit and superior sealing.  \nDetails: Made with non\u2011asbestos silicone rubber, Viton valve stem seals, and MLS graphite gaskets for durability and reliable performance.",
+   "category": "Automotive",
+   "price": 59.69,
+   "guesses": {
+    "groq": 95.0,
+    "gpt41nano": 150.0,
+    "dnn": 82.56
+   }
+  },
+  {
+   "title": "Task T24287 Roman Ogee Router Bit with 1/4-Inch Shank, 1-Inch by 1/2-Inch Carbide Height, 5/32-Inch Radius",
+   "summary": "Title: Task Roman Ogee Router Bit 1/4\" Shank, 1\" Dia., \u00bd\" Carbide Height, 5/32\" Radius  \nCategory: Power Tool Accessories  \nBrand: Task  \nDescription: A precision double\u2011flute router bit that cuts smooth ogee profiles with minimal vibration.  \nDetails: Features a 1/4\u2011inch hardened steel shank, super fine grain tungsten carbide tip, and a non\u2011stick powder\u2011coat finish for long\u2011lasting performance.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 55.88,
+   "guesses": {
+    "groq": 18.0,
+    "gpt41nano": 35.0,
+    "dnn": 38.42
+   }
+  },
+  {
+   "title": "Travelpro Platinum Elite Slim Business Laptop Briefcase, Fits up to 15.6 Inch Laptop, Work School Travel, Men ",
+   "summary": "Title: Travelpro Platinum Elite Slim Business Laptop Briefcase  \nCategory: Accessories  \nBrand: Travelpro  \nDescription: A sleek, durable slim briefcase that fits a 15.6\" laptop and keeps work essentials organized on the go.  \nDetails: Features padded laptop and tablet sleeves, multiple organizational pockets, RFID\u2011blocking safety pocket, genuine leather handles, stain\u2011 and abrasion\u2011resistant nylon, and an unobtrusive rear strap for easy stacking.",
+   "category": "Electronics",
+   "price": 213.83,
+   "guesses": {
+    "groq": 225.0,
+    "gpt41nano": 250.0,
+    "dnn": 185.09
+   }
+  },
+  {
+   "title": "Southwire 120V/15A Right Angle User Attachable GFCI Plug, Yellow",
+   "summary": "Title: 120\u202fV/15\u202fA Right\u2011Angle GFCI Plug, Yellow  \nCategory: Electronics  \nBrand: Coleman Cable  \nDescription: A rain\u2011proof, UL\u2011listed right\u2011angle GFCI plug that attaches to existing equipment cords.  \nDetails: Features a 4\u20116\u202fmA trip, <25\u202fms response time, and manual reset for outdoor power tools and appliances.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 37.87,
+   "guesses": {
+    "groq": 18.0,
+    "gpt41nano": 25.0,
+    "dnn": 49.11
+   }
+  },
+  {
+   "title": "JRready ST6313 DT Deutsch Connector Kit, 2 3 4 6 8 12 Pin Gray DT Connectors, Size 16 Solid Contacts Teriminal",
+   "summary": "Title: JRready Deutsch DT Series Connector Kit  \nCategory: Electronics  \nBrand: JRready  \nDescription: A versatile connector kit featuring 2\u201112 pin, size\u201116 DT connectors with solid nickel\u2011plated contacts for 14\u201120AWG wire.  \nDetails: Waterproof, dust\u2011proof, and corrosion\u2011resistant connectors with sealing plugs, a built\u2011in contact extraction tool, and options for in\u2011line, flange, or PCB mounting.",
+   "category": "Automotive",
+   "price": 199.68,
+   "guesses": {
+    "groq": 45.0,
+    "gpt41nano": 25.0,
+    "dnn": 93.49
+   }
+  },
+  {
+   "title": "15\" Locking Shower Head Extension Arm in Oil Rubbed Bronze",
+   "summary": "Title: 15\" Oil\u2011Rubbed Bronze Locking Shower Head Extension Arm  \nCategory: Home & Garden \u2013 Bathroom Fixtures  \nBrand: Neatitems  \nDescription: Extend and securely lock a heavy shower head 15 inches from the wall.  \nDetails: Made of solid brass with a durable oil\u2011rubbed bronze finish; easy one\u2011hand installation and adjustable height.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 79.95,
+   "guesses": {
+    "groq": 29.0,
+    "gpt41nano": 35.0,
+    "dnn": 33.01
+   }
+  },
+  {
+   "title": "Mylites+ Standard Comic Book Mylar Sleeves 7 1/4\" x 10 1/2\" Plus 1 1/2\" Flap",
+   "summary": "Title: Mylites+ Standard Comic Book Mylar Sleeves  \nCategory: Electronics  \nBrand: E. Gerber  \nDescription: 50 protective mylar sleeves for 7\u00bc\" x 10\u00bd\" comics with 1\u00bd\" flap.  \nDetails: Made of archival\u2011grade mylar, zero off\u2011gassing, highly resistant to oxygen and moisture.",
+   "category": "Office_Products",
+   "price": 34.99,
+   "guesses": {
+    "groq": 18.0,
+    "gpt41nano": 15.0,
+    "dnn": 41.6
+   }
+  },
+  {
+   "title": "Tidal Front + Rear Fender Flares 4PC Pocket Rivet Style for 10-16 Ram 2500/3500",
+   "summary": "Title: Tidal Front & Rear Fender Flares \u2013 4\u2011Pack Pocket Rivet Style  \nCategory: Automotive Accessories  \nBrand: Tidal Automotive  \nDescription: Rugged fender flares with a textured black finish designed for 2010\u20112017 RAM 2500/3500 trucks.  \nDetails: Made from UV\u2011protected ABS plastic, these flares bolt on easily without drilling and come with all necessary mounting hardware.",
+   "category": "Automotive",
+   "price": 254.99,
+   "guesses": {
+    "groq": 35.0,
+    "gpt41nano": 150.0,
+    "dnn": 282.2
+   }
+  },
+  {
+   "title": "Dakota Alert MURS Alert Probe Sensor - MAPS Metal Detecting Wireless Transmitter with 50' Direct Burial Cable,",
+   "summary": "Title: Dakota Alert MURS Driveway Probe Sensor  \nCategory: Electronics  \nBrand: Dakota Alert  \nDescription: A wireless driveway sensor that detects large metal vehicles and sends alerts to MURS receivers up to 50 feet away.  \nDetails: Features battery-powered operation, a 50\u2011foot direct\u2011burial cable, and false\u2011alarm suppression for animals and wind.",
+   "category": "Electronics",
+   "price": 219.99,
+   "guesses": {
+    "groq": 45.0,
+    "gpt41nano": 150.0,
+    "dnn": 109.1
+   }
+  },
+  {
+   "title": "DALDED LED Light Kit for Lego Sonic Green Hill Zone 21331, Compatible with Lego 21331, Lighting Your Toy for S",
+   "summary": "Title: LED Light Kit for Lego Sonic Green Hill Zone 21331  \nCategory: Home & Garden > D\u00e9cor > Lighting  \nBrand: DALDED  \nDescription: Brighten your Lego Sonic Green Hill Zone set with this safe, battery\u2011 or USB\u2011powered LED kit.  \nDetails: Features heat\u2011resistant, non\u2011combustible wiring that can be hidden inside the model, easy installation, and suitable for ages 12 and up.",
+   "category": "Toys_and_Games",
+   "price": 24.99,
+   "guesses": {
+    "groq": 18.0,
+    "gpt41nano": 25.0,
+    "dnn": 37.31
+   }
+  },
+  {
+   "title": "152MM Hole Saws M42 Bi-Metal High Speed Steel Heavy Duty 6 inch Cutter Drill Bits Holesaw for Easily Drilling ",
+   "summary": "Title: 152mm Bi-Metal Hole Saw  \nCategory: Tool Accessories  \nBrand: Aoktorkit  \nDescription: A 152mm high\u2011speed steel hole saw for precise drilling in wood, metal, and plastic.  \nDetails: Features M42 HSS teeth, heat\u2011treated for durability, and a sharp, low\u2011vibration blade for stable hole cuts.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 17.99,
+   "guesses": {
+    "groq": 35.0,
+    "gpt41nano": 50.0,
+    "dnn": 31.21
+   }
+  },
+  {
+   "title": "Baseball Backpacks Large 18 Inch Bookbag Shoulder School Computer Hiking Gym Travel Casual Travel Daypack",
+   "summary": "Title: TropicalLife 18\u2011Inch Large Backpack  \nCategory: Accessories \u2192 Backpacks  \nBrand: TropicalLife  \nDescription: A lightweight, eco\u2011friendly 18\u2011inch backpack with waterproof polyester construction.  \nDetails: Features a zipper main compartment, small zip pockets, two inner pockets, and two breathable side pouches for water bottles or umbrellas.",
+   "category": "Electronics",
+   "price": 31.77,
+   "guesses": {
+    "groq": 45.0,
+    "gpt41nano": 35.0,
+    "dnn": 31.73
+   }
+  },
+  {
+   "title": "Wenger City Upgrade Laptop Backpack with Cross Body Day Bag 40.64 cm 16 Inches Grey",
+   "summary": "Title: Wenger City Upgrade 16\" Laptop Backpack  \nCategory: Bags & Backpacks  \nBrand: Wenger  \nDescription: A slim 16\" laptop backpack designed for commuters, featuring dual A4 compartments, a dedicated laptop pocket, and a tablet sleeve.  \nDetails: Includes two water\u2011resistant quick\u2011access front pockets, a trolley sleeve, padded back and shoulder straps, and a flexible open side pocket.",
+   "category": "Electronics",
+   "price": 145.42,
+   "guesses": {
+    "groq": 55.0,
+    "gpt41nano": 80.0,
+    "dnn": 70.48
+   }
+  },
+  {
+   "title": "AUTOFREE LED Tail Lights Assembly Compatible with 2014-2021 Toyota Tundra DRL Tail Lamps Replacement for Picku",
+   "summary": "Title: LED Tail Light Assembly for 2014\u20112021 Toyota Tundra  \nCategory: Automotive Lighting  \nBrand: OEM Grade  \nDescription: A high\u2011brightness LED tail light kit for Toyota Tundra pickups, featuring a black housing and clear acrylic lens.  \nDetails: Plug\u2011and\u2011play installation with no rewiring, waterproof construction, and full compliance with federal and international safety standards.",
+   "category": "Automotive",
+   "price": 201.99,
+   "guesses": {
+    "groq": 180.0,
+    "gpt41nano": 150.0,
+    "dnn": 235.4
+   }
+  },
+  {
+   "title": "Adams Check Payment and Deposit Register, 8-1/2\" x 11\", 44 Pages (AFR60), White- 2PACK",
+   "summary": "Title: Adams Check Payment & Deposit Register \u2013 44\u2011Page 8.5\u201d\u00d711\u201d White  \nCategory: Office Supplies  \nBrand: Adams  \nDescription: A nondated register for recording checks and deposits with ready\u2011to\u2011use forms and a summary page.  \nDetails: Includes 44 pages, a wire\u2011o spiral for flat\u2011laying, bank reconciliation worksheet, and a water\u2011resistant polypropylene cover.",
+   "category": "Office_Products",
+   "price": 35.49,
+   "guesses": {
+    "groq": 18.0,
+    "gpt41nano": 8.0,
+    "dnn": 29.19
+   }
+  },
+  {
+   "title": "3D Tree Hole Branches 075 Stair Risers Decoration Photo Mural Vinyl Decal Wallpaper Murals Wallpaper Mural US ",
+   "summary": "Title: 3D Tree Hole Stair Risers Vinyl Mural  \nCategory: Home D\u00e9cor  \nBrand: AJ  \nDescription: A waterproof, self\u2011adhesive vinyl mural that transforms stair risers into a 3D tree hole scene.  \nDetails: 15\u202f\u00d7\u202f18\u202fcm (7\u2033\u202f\u00d7\u202f37\u2033) rectangular design suitable for stairs, walls, mirrors, doors, windows, and furniture.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 129.99,
+   "guesses": {
+    "groq": 45.0,
+    "gpt41nano": 25.0,
+    "dnn": 140.06
+   }
+  },
+  {
+   "title": "KOHLER 18865-CP Filtered Water Faucet, Polished Chrome",
+   "summary": "Title: Kohler Filtered Water Faucet  \nCategory: Bathroom Fixtures  \nBrand: Kohler  \nDescription: A single\u2011lever, deck\u2011mounted faucet that delivers filtered water directly from the tap.  \nDetails: Features a polished chrome finish, 2.2 GPM flow rate, and lifetime warranty.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 475.0,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 350.0,
+    "dnn": 174.76
+   }
+  },
+  {
+   "title": "Fjallraven, Kanken Laptop 15\" Backpack for Everyday, Autumn Leaf",
+   "summary": "Title: Fjallraven Kanken 15\" Laptop Backpack  \nCategory: Backpack  \nBrand: Fjallraven  \nDescription: Classic Kanken design now sized for a 15\" laptop, featuring a padded laptop compartment, water\u2011resistant Vinylon F fabric, and multiple pockets for everyday items.  \nDetails: Comes with dual top snap handles, padded shoulder straps, a rain flap on the main zipper, and 18\u202fL of storage space.",
+   "category": "Electronics",
+   "price": 119.65,
+   "guesses": {
+    "groq": 95.0,
+    "gpt41nano": 130.0,
+    "dnn": 68.59
+   }
+  },
+  {
+   "title": "Projector, CRAZVIEW Projector with WiFi and Bluetooth, 7500L Mini Projector with 100\u201d Screen, HD 1080P Support",
+   "summary": "Title: Portable 7500L Mini Projector  \nCategory: Electronics  \nBrand: (Brand not specified)  \nDescription: A compact projector that delivers up to 100\" HD 1080P image with WiFi and Bluetooth connectivity.  \nDetails: Features 7500L LED lamp, 2400\u20137500 lumens, 360\u00b0 stereo speakers, multiple input ports (HDMI, VGA, USB, AV) and a built\u2011in cooling system for extended lamp life.",
+   "category": "Electronics",
+   "price": 53.4,
+   "guesses": {
+    "groq": 350.0,
+    "gpt41nano": 250.0,
+    "dnn": 79.96
+   }
+  },
+  {
+   "title": "Diversitech WG840585 Motor, (Ddb) 1/3Hp, 115V, , Grey",
+   "summary": "Title: Diversitech 1/3 HP 115V Grey Motor  \nCategory: Motors & Drives  \nBrand: Diversitech  \nDescription: 115V, 1/3 horsepower motor for industrial and hobby applications.  \nDetails: Grey color, 7\" square footprint, 9 lb weight, efficient and easy to install.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 134.12,
+   "guesses": {
+    "groq": 65.0,
+    "gpt41nano": 150.0,
+    "dnn": 104.8
+   }
+  },
+  {
+   "title": "Retevis RT68 Soft Earhook Walkie Talkie Earpiece with Mic, in-Ear, Compatible with Retevis RT22 RT21 H-777 RT6",
+   "summary": "Title: Retevis RT68 Soft Earhook Walkie Talkie Earpiece  \nCategory: Electronics  \nBrand: Retevis  \nDescription: Lightweight, on\u2011ear earpiece with integrated microphone designed for RT68 and other 2\u2011pin walkie talkies.  \nDetails: Features a soft ear hook, rotatable earplug, durable push\u2011to\u2011talk button, adjustable clip, and replaceable sponge cuff for comfort and hygiene.",
+   "category": "Electronics",
+   "price": 6.99,
+   "guesses": {
+    "groq": 12.0,
+    "gpt41nano": 15.0,
+    "dnn": 27.77
+   }
+  },
+  {
+   "title": "MC: Pindicator (Dual Intensity Amber)",
+   "summary": "Title: Dual\u2011Intensity Amber Pindicator  \nCategory: Motorcycle Lighting  \nBrand: Morimoto  \nDescription: A compact, switchback LED turn signal that toggles between bright white and amber, with optional dual\u2011intensity mode.  \nDetails: Features a custom clear lens for directional lighting, waterproof and wash\u2011proof construction, hard\u2011anodized CNC aluminum base, and CAN\u2011BUS compatible for modern bikes.",
+   "category": "Automotive",
+   "price": 40.0,
+   "guesses": {
+    "groq": 85.0,
+    "gpt41nano": 150.0,
+    "dnn": 161.91
+   }
+  },
+  {
+   "title": "Evan-Fischer Front Bumper Cover Compatible with 2015-2017 BMW X3 Primed with FL Holes/Surround View",
+   "summary": "Title: Evan\u2011Fischer Front Bumper Cover for 2015\u20112017 BMW X3 (Primed)  \nCategory: Automotive Parts  \nBrand: Evan Fischer  \nDescription: A primed front bumper cover that fits 2015\u20112017 BMW X3 models, designed to accommodate standard front and side holes for surround\u2011view camera wiring.  \nDetails: Lightweight 13.79 lb cover features a durable finish, ready\u2011to\u2011install design, and a 1\u2011year warranty when purchased through Auto Parts Giant.",
+   "category": "Automotive",
+   "price": 202.38,
+   "guesses": {
+    "groq": 250.0,
+    "gpt41nano": 250.0,
+    "dnn": 258.69
+   }
+  },
+  {
+   "title": "Laisomeke Waterproof Junction Box, Universal IP67 Project Box with Clear Grey Cover Waterproof DIY Electrical ",
+   "summary": "Title: Laisomeke IP67 Waterproof Junction Box  \nCategory: Electrical Enclosures  \nBrand: Laisomeke  \nDescription: A compact, dust\u2011proof, IP67 rated ABS plastic box with a clear grey cover for secure outdoor electrical connections.  \nDetails: Features easy screw\u2011in installation, durable impact resistance, and includes mounting plate, screws, and connectors.",
+   "category": "Tools_and_Home_Improvement",
+   "price": 11.99,
+   "guesses": {
+    "groq": 18.0,
+    "gpt41nano": 15.0,
+    "dnn": 29.23
+   }
+  }
+ ]
+}

@@ -18,6 +18,21 @@ lite/
 full/
 batches.pkl
 
+# Trained weights. dnn_weights.pt is ~1.1 GB -- GitHub rejects files over
+# 100 MB, so this must never be committed. Regenerate with:
+#   python benchmarks/run_dnn.py
+*.pt
+*.pth
+
+# Generated fine-tuning payloads (benchmarks/run_finetune.py)
+jsonl/*.jsonl
+
+# Training run output (progress bars, several MB)
+training_log.txt
+
+# Personal working notes, not part of the project
+CLAUDE_PROMPT_*.md
+
 # OS
 .DS_Store
 Thumbs.db

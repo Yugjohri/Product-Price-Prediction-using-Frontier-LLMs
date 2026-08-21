@@ -1,0 +1,5 @@
+# The deployed serverless function (api/predict.py) has NO dependencies.
+# It uses only the Python standard library, which keeps the Vercel bundle tiny
+# and removes SDK version drift from production entirely.
+#
+# Local development and benchmarking need more; see requirements-dev.txt.
